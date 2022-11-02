@@ -11,7 +11,7 @@ uWSGI==2.0.18
 boto3==1.4.7
 pytesseract==0.1.6
 Pillow>=4.0.0
-GDAL==2.1.0
+GDAL==3.4.3
 affine==2.1.0
 demjson==2.2.4
 pyqrcode>=1.2.1
