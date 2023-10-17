@@ -24,12 +24,21 @@ npm run lint
 npm test
 
 # installation version required for npm install / npm run build
-npm: 6.14.16   
-node 8.10.0   
-   
-npm install npm@6.14.16   
-curl -fsSL https://deb.nodesource.com/setup_8.x | sudo -E bash -    
-apt-get install -y nodejs   
+npm: 6.14.16
+node 8.10.0
+
+npm install npm@6.14.16
+curl -fsSL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+apt-get install -y nodejs
 
 ```
+Regard node/npm versions, v8.* should work (lts/carbon). `nvm` can assist, e.g.:
 
+```
+nvm install lts/carbon
+nvm use lts/carbon
+npm --version
+> 6.13.4
+node --version
+> v8.17.0
+```

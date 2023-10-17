@@ -52,10 +52,10 @@
   import gkToolbox from './toolbox.vue'
   export default {
     store: {
-        fixedScales:'fixedScales', 
-        resolutions:'resolutions', 
-        matrixSets:'matrixSets', 
-        dpmm:'dpmm', 
+        fixedScales:'fixedScales',
+        resolutions:'resolutions',
+        matrixSets:'matrixSets',
+        dpmm:'dpmm',
         view:'view',
         displayGraticule:'settings.graticule',
         displayResolution:'displayResolution'
@@ -491,7 +491,7 @@
               if (typeof this.vm.svgBlobs[this.key] !== 'undefined') { this.pResolve() }
               // RACE CONDITION: MS edge inlines promises and callbacks!
               // we can't set vm.svgBlobs[this.key] to be the Promise, as
-              // it's entirely possible for the whole thing to have been 
+              // it's entirely possible for the whole thing to have been
               // completed in the constructor before the svgBlobs array is even set
               //vm.svgBlobs[this.key] = ''
               //console.log("_addSVG._draw " + this.key + "\t" + this.svgToAdd + ": " + this.url)
@@ -516,7 +516,7 @@
                       self._draw()
                   })
                 } else {
-                  self.vm.jobs[svgUrl] = new Promise(function (resolve, reject) { 
+                  self.vm.jobs[svgUrl] = new Promise(function (resolve, reject) {
                     // load svg
                     //console.log('addSVG: Cache miss for '+ self.key)
                     var req = new window.XMLHttpRequest()
@@ -600,8 +600,8 @@
             }).join(";")
             key = suffix?(key + ";" + suffix):key
             var style = this.cachedStyles[key]
-            if (style) { 
-                return style 
+            if (style) {
+                return style
             }
             style = styleFunc(feature)
             if (style) {
@@ -699,7 +699,7 @@
       parseDMSString: function(dmsStr) {
         // https://regex101.com/r/kS2zR1/22
         var dmsRegex = /^\s*(-)?(\d+(?:\.\d+)?)[°º:d\s]?\s*(?:(\d+(?:\.\d+)?)['’‘′:m]\s*(?:(\d{1,2}(?:\.\d+)?)(?:"|″|’’|''|s)?)?)?\s*([NSEW])?[,:\s]+(-)?(\d+(?:\.\d+)?)[°º:d\s]?\s?(?:(\d+(?:\.\d+)?)['’‘′:m]\s*(?:(\d{1,2}(?:\.\d+)?)(?:"|″|’’|''|s)?)?)?\s*([NSEW])?$/gmi
-        
+
         var groups = dmsRegex.exec(dmsStr)
 
         if (!groups) {
@@ -739,7 +739,7 @@
             // the second value is less than -90 or larger than 90, reverse the order
             coords = coords.reverse()
         } else if (!groups[5] && !groups[10]) {
-            // no one is explicitly defined, 
+            // no one is explicitly defined,
             // reverse the order because most people use is northing, easting (opposite of EPSG:4326)
             coords = coords.reverse()
         } else if (!groups[5] || !groups[10]) {
@@ -762,7 +762,7 @@
                 coords = coords.reverse()
             }
         }
-        return coords 
+        return coords
       },
       // parse a string containing coordinates in MGA grid reference format
       // e.g. MGA 51 340000 6340000, MGA 51 340000mE 6340000mN, MGA 51 3406340
@@ -770,7 +770,7 @@
         // https://regex101.com/r/zY8dW4/2
         var mgaRegex = /(?:MGA|mga)\s*(49|50|51|52|53|54|55|56)\s*(\d{3,7})\s*[mM]{0,1}\s*([nNeE]{0,1})\s*,*\s*(\d{4,7})\s*[mM]{0,1}\s*([nNeE]{0,1})/gi
         var groups = mgaRegex.exec(mgaStr)
-        
+
         if (!groups) {
           return null
         }
@@ -797,7 +797,7 @@
 
         var coords = proj4('EPSG:283'+groups[1], 'EPSG:4326').forward([results.mgaEast, results.mgaNorth])
         results.coords = coords
-        
+
         return results
       },
       // parse a string containing a FD Grid reference
@@ -852,7 +852,7 @@
           tileLoader(tile, src)
         }
       },
-	  
+
       setUrlTimestamp:function(tileSource,time) {
         if (!tileSource.setUrlTimestamp) {
           tileSource.setUrlTimestamp = function() {
@@ -866,7 +866,7 @@
         }
         tileSource.setUrlTimestamp(time)
       },
-	  
+
       refreshLayerTile : function (tileLayer) {
         var vm = this
         //for timeline layer, layer's source will be changed when change timeline index
@@ -883,7 +883,7 @@
         }
         tileLayer.getSource().load()
       },
-	  
+
       refreshTimelineFunc:function(layerOptions,postFetchTimelineFunc) {
         var vm = this
         var _func = null
@@ -1134,7 +1134,7 @@
 
         return tileLayer
       },
-	  
+
       // loader for vector layers with hover querying
       createWFSLayer: function (options) {
         if (options.mapLayer) return options.mapLayer
@@ -1170,18 +1170,18 @@
         vector.progress = ''	// NB can add properties to object this way
         vectorSource.retrieveFeatures = function (filter, onSuccess, onError) {
           var params = $.extend({}, options.params)
-          
+
           if (filter) {
             params.cql_filter = filter
           } else if (params.cql_filter) {
             delete params.cql_filter
           }
-		  
+
 		  $.ajax({
 			url: url + '?' + $.param(params),
 			  success: function (response, stat, xhr) {
 
-              var features = vm.$root.geojson.readFeatures(response)		
+              var features = vm.$root.geojson.readFeatures(response)
               onSuccess(features)
             },
             error: function () {
@@ -1196,7 +1196,7 @@
             }
           })
         }
-		
+
         vectorSource.loadSource = function (loadType, onSuccess) {
           if (options.cql_filter) {
             options.params.cql_filter = options.cql_filter
@@ -1215,7 +1215,7 @@
                   source.clear(true)
                   source.addFeatures(features)
               }
-			  
+
               if (options.onload) {
                 options.onload(loadType, vectorSource, features, defaultOnload)
               } else {
@@ -1258,7 +1258,7 @@
             options.onadd(event.feature)
           })
         }
-        
+
         vector.set('name', options.name)
         vector.set('id', options.mapLayerId)
         vector.layer = options
@@ -1291,7 +1291,7 @@
         }
         return vector
       },
-	  
+
 	  createWMSLayer: function (mosaicPosition, dateInfo) {
 		  // Added Nov 2020 to enable loading of hotspot mosaic magery
 		  //mosaicPosition is the position within the map layers array in which the mosaic layers should be loaded (immediately below hotspots and footprints)
@@ -1347,26 +1347,26 @@
 				  },
 				  projection: 'EPSG:28350'
 			  })
-				
+
 			  var imgLayer = new ol.layer.Image({
 				  opacity: 1,
 				  source: imgSource,
 				  name: 'Flight mosaics',
 				  //id: 'hotspots:vrt-test'
 			  })
-			  
+
 			  vm.olmap.getLayers().insertAt(mosaicPosition, imgLayer)
 			  //vm.olmap.getLayers().insertAt(1, imgLayer)
 			  })
 	},
-	  
+
 	  createWMSLayerSingleImage: function (position, flight_datetime, hotspot_no, image_name) {
 		  // Added Nov/Dec 2020 to enable loading of hotspot imagery
 		  //position is the position within the map layers array in which the mosaic layers should be loaded (immediately below hotspots and footprints)
 		  var vm = this
 		  var imgSource = new ol.source.ImageWMS({
 			  url: this.env.hotspotService + '/wms',
-			  serverType: 'geoserver',			  
+			  serverType: 'geoserver',
 			  crossOrigin : 'anonymous',
 			  params: {
 				LAYERS: flight_datetime + '_img_' + image_name
@@ -1378,10 +1378,10 @@
 			  source: imgSource,
 			  name: 'Hotspot image ' + flight_datetime + ' ' + hotspot_no
 		  })
-		  vm.olmap.getLayers().insertAt(position, imgLayer)  
-		  //vm.olmap.getLayers().insertAt(1, imgLayer)  
+		  vm.olmap.getLayers().insertAt(position, imgLayer)
+		  //vm.olmap.getLayers().insertAt(1, imgLayer)
 	  },
-	  
+
 	  createWMSLayerHotspots: function (filter, insertPosition) {
 		  // Added Nov/Dec 2020 to enable loading of hotspot imagery
 		  //position is the position within the map layers array in which the mosaic layers should be loaded (immediately below hotspots and footprints)
@@ -1403,7 +1403,7 @@
 		  })
 		  vm.olmap.getLayers().insertAt(insertPosition, imgLayer)
 	  },
-	  
+
       createAnnotations: function (layer) {
         if (!(this.annotations.featureOverlay["layer"])) {
             this.annotations.featureOverlay.layer = layer
@@ -1411,7 +1411,7 @@
         }
         return this.annotations.featureOverlay
       },
-	  
+
       // loader to create a WMTS layer from a kmi datasource
       createTileLayer: function (options) {
         if (options.mapLayer) return options.mapLayer
@@ -1422,7 +1422,7 @@
         var layer = $.extend({
           opacity: 1,
           name: 'Mapbox Outdoors',
-          id: 'dpaw:mapbox_outdoors',
+          id: 'dbca:mapbox-outdoors',
           format: 'image/png',
           tileSize: 1024,
           style: '',
@@ -1520,7 +1520,7 @@
                         }
                     })
                 }
-            })  
+            })
         }
 
         tileLayer.postAdd = function() {
@@ -1549,7 +1549,7 @@
               clearInterval(this.autoTimelineRefresh)
               this.autoTimelineRefresh = null
           }
-        }   
+        }
 
         tileLayer.refresh = function() {
             if (!this.refreshTimeline) {
@@ -1580,7 +1580,7 @@
         var layer = $.extend({
           opacity: 1,
           name: 'Mapbox Outdoors',
-          id: 'dpaw:mapbox_outdoors',
+          id: 'dbca:mapbox-outdoors',
           format: 'image/png',
           tileSize: 1024,
           style: '',
@@ -1604,13 +1604,13 @@
           opacity: layer.opacity || 1,
           source: imgSource
         })
-		
+
         // hook the tile loading function to update progress indicator
         imgLayer.progress = ''
 
         imgLayer.postRemove = function () {
           vm._postRemove(this)
-        }  
+        }
 
         imgLayer.setParams = function(options) {
             var params = imgSource.getParams()
@@ -1659,12 +1659,12 @@
 
         return imgLayer
       },
-	  
+
       enableDependentLayer:function (olLayer, dependentLayerId, enabled) {
         if (!olLayer.layer || !olLayer.layer.dependentLayers) return
 
         var dependentLayer = olLayer.layer.dependentLayers.find(function(l) {return l.mapLayerId === dependentLayerId})
-        
+
         if (!enabled) {
             //disable dependent layer
             if (dependentLayer && dependentLayer.mapLayer) {
@@ -1679,13 +1679,13 @@
         if (dependentLayer && dependentLayer.mapLayer && this.olmap.getLayers().getArray().find(function(l) {return l === dependentLayer.mapLayer})) {
             //already enabled
             dependentLayer.mapLayer.show = true
-            return 
+            return
         }
         var index = this.olmap.getLayers().getArray().findIndex(function(l) {return l === olLayer})
         if (index < 0) return
         var vm = this
         for(var i = olLayer.layer.dependentLayers.length - 1;i >= 0;i--) {
-            l = olLayer.layer.dependentLayers[i]  
+            l = olLayer.layer.dependentLayers[i]
             if (l.mapLayerId === dependentLayerId) {
                 vm.olmap.getLayers().insertAt(index,l.mapLayer)
                 l.mapLayer.show = true
@@ -1696,7 +1696,7 @@
             }
         }
       },
-      
+
 	  getMapLayer: function (id) {
         if (!this.olmap) {return undefined}
         if (id && id.mapLayerId) { id = id.mapLayerId} // if passed a catalogue layer, get actual id
@@ -1704,7 +1704,7 @@
           return layer.get('id') === id
         })
       },
-      
+
 	  // initialise map
       init: function (options) {
         var vm = this
@@ -1839,7 +1839,7 @@
         $.each(fixedLayers, function(index, fixedLayer) {
 			var catLayer = vm.$root.catalogue.getLayer(fixedLayer.mapLayerId || fixedLayer.id)
 			if (catLayer) {
-				//fixed layer already exist, update the properties 
+				//fixed layer already exist, update the properties
 				$.extend(catLayer, fixedLayer, {
 					name:catLayer["name"] || fixedLayer["name"],
 					title:catLayer["title"] || fixedLayer["title"],
@@ -1855,18 +1855,18 @@
 				vm.$root.catalogue.catalogue.push(fixedLayer)
 			}
         })
-        vm._overviewLayer = vm._overviewLayer || $.extend({}, vm.$root.catalogue.getLayer(vm.env.overviewLayer || "dpaw:mapbox_outdoors"))
+        vm._overviewLayer = vm._overviewLayer || $.extend({}, vm.$root.catalogue.getLayer(vm.env.overviewLayer || "dbca:mapbox-outdoors"))
 
         //ignore the active layers which does not exist in the catalogue layers.
         activeLayers = activeLayers.filter(function(activeLayer){
             return vm.$root.catalogue.getLayer(activeLayer[0]) && true
         })
-		
+
 		/*// Filter out any thermal imaging layers
 		activeLayers = activeLayers.filter(function(activeLayer){
             return activeLayer[0] != "hotspots:hotspot_centroids" && activeLayer[0] != "hotspots:hotspot_flight_footprints" && activeLayer[0] != "hotspots:vrt-test" && true
         })*/
-		
+
         //merge custom options of active layer to catalogue layer
         var initialLayers = activeLayers.reverse().map(function (activeLayer) {
           return $.extend(vm.$root.catalogue.getLayer(activeLayer[0]), activeLayer[1])
@@ -1881,7 +1881,7 @@
                 enabled:false,
                 autoenable:false,
                 controls:new ol.control.Zoom({
-                  target: $('#external-controls').get(0)   
+                  target: $('#external-controls').get(0)
                 })
             },
             "overviewMap": {
@@ -1899,8 +1899,12 @@
                 }),
                 preenable:function(enable){
                     if (enable) {
-                        this.controls.getOverviewMap().addLayer(vm['create' + vm._overviewLayer.type](vm._overviewLayer))
-                        vm._overviewLayer.mapLayer.postAdd()
+                        try {
+                            this.controls.getOverviewMap().addLayer(vm['create' + vm._overviewLayer.type](vm._overviewLayer))
+                            vm._overviewLayer.mapLayer.postAdd()
+                        } catch (error) {
+                            console.log(error)
+                        }
                     } else {
                         if (this._interact) {
                             this._interact.unset()
@@ -2024,7 +2028,7 @@
             }
         }
       },
-      
+
 	  setRefreshInterval: function(layer, interval) {
           var vm = this
           layer.refresh = interval
@@ -2087,7 +2091,7 @@
         }
         _getFeature(0)
       },
-      
+
 	  getGridData:function(coordinate, successCallback, failedCallback) {
           if (!successCallback) {
               successCallback = function(data) {alert(data)}
@@ -2133,11 +2137,11 @@
                   if (response.features[0]["grid"]["failed"]) {
                       failedCallback(response.features[0]["grid"]["failed"])
                   } else if (response.features[0]["grid"]["id"] === "fd_grid_points") {
-                      successCallback("FD:" + response.features[0]["grid"]["feature"]["grid"]) 
+                      successCallback("FD:" + response.features[0]["grid"]["feature"]["grid"])
                   } else if (response.features[0]["grid"]["id"] === "pilbara_grid_1km") {
-                      successCallback("PIL:" + response.features[0]["grid"]["feature"]["grid"]) 
+                      successCallback("PIL:" + response.features[0]["grid"]["feature"]["grid"])
                   } else {
-                      successCallback(null) 
+                      successCallback(null)
                   }
               },
               error: function (xhr,status,message) {
@@ -2148,7 +2152,7 @@
               }
           })
       },
-      
+
 	  getPosition:function(coordinate, successCallback, failedCallback) {
           if (!successCallback) {
               successCallback = function(data) {alert(data)}
@@ -2279,7 +2283,7 @@
       mapStatus.phaseBegin("gk-init",60,"Listen 'gk-init' event",true,true)
       this.$on('gk-init', function() {
         mapStatus.phaseEnd("gk-init")
-        
+
         mapStatus.phaseBegin("post-init",20,"Post initialize")
         if ($("#map .ol-viewport canvas").attr("width")) {
             vm.displayResolution[0] = Math.round(($("#map .ol-viewport canvas").attr("width") /  $("#map .ol-viewport canvas").width()) * 100) / 100

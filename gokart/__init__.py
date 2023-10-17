@@ -21,7 +21,6 @@ except:
     import Image
 
 import bottle
-import shapely_extension
 import settings
 
 import sys
@@ -236,7 +235,7 @@ def weatherforecast():
         traceback.print_exc()
         return traceback.format_exception_only(sys.exc_type,sys.exc_value)
 
-# saveas
+
 @bottle.route("/saveas", method="POST")
 def saveas():
     user = bottle.request.get_header("Remote-User", "anonymous")
@@ -278,25 +277,36 @@ def himawari8(target):
         else:
             getcaps = uwsgi.cache_get("himawari8")
     else:
-        res = requests.get("{}{}".format(baseUrl,FIREWATCH_GETCAPS),verify=FIREWATCH_HTTPS_VERIFY)
-        res.raise_for_status()
-        getcaps = res.content
+        resp = requests.get("{}{}".format(baseUrl, FIREWATCH_GETCAPS), verify=FIREWATCH_HTTPS_VERIFY)
+        resp.raise_for_status()
+        getcaps = resp.content
         getcaps = getcaps.decode("utf-8")
-        uwsgi.cache_set("himawari8", getcaps, 60*10)  # cache for 10 mins
+        uwsgi.cache_set("himawari8", getcaps, 60 * 10)  # cache for 10 mins
 
     if not result:
-        layernames = re.findall("\w+HI8\w+{}\.\w+".format(target), getcaps)
+        # Oct-2023: Himarwari layer names updated from *_HI8_* to *_HI9_*
+        layernames = re.findall("\w+HI9\w+{}\.\w+".format(target), getcaps)
         layers = []
+
         for layer in layernames:
             layers.append([settings.PERTH_TIMEZONE.localize(datetime.datetime.strptime(re.findall("\w+_(\d+)_\w+", layer)[0], "%Y%m%d%H%M")), layer])
+
         layers = sorted(layers,key=lambda layer:layer[0])
+
         for layer in layers:
             layer[0] = (layer[0]).strftime("%a %b %d %Y %H:%M:%S AWST")
+
         result = {
             "servers": [baseUrl + FIREWATCH_SERVICE],
             "layers": layers,
-            "updatetime":layers[len(layers) - 1][0]
+            #"updatetime":layers[len(layers) - 1][0]
         }
+
+        if len(layers) > 0:
+            result["updatetime"] = layers[len(layers) - 1][0]
+        else:
+            result["updatetime"] = None
+
         uwsgi.cache_set(key, json.dumps(result), 60*10)  # cache for 10 mins
 
     if len(result["layers"]) == 0:
