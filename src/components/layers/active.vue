@@ -152,7 +152,9 @@
     },
     watch: {
       "layer": function() {
-        this.layerRefreshStopped = this.layer.refresh?(this.layer.autoRefreshStopped || false):true
+	if (this.layer) { 
+	        this.layerRefreshStopped = this.layer.refresh?(this.layer.autoRefreshStopped || false):true
+	}
       },
     },
     // methods callable from inside the template
@@ -235,11 +237,14 @@
         }
         return results
       },
-      mapLayer: function (id) { 
+      mapLayer: function (id) {
+	console.log("MAPLAYER");
+	console.log(id); 
         if (!this.$root.map) {
           return null
         }
         return this.$root.map.getMapLayer(id || this.layer) 
+
       },
       getLayer: function (id) {
         return this.$root.catalogue.getLayer(id)

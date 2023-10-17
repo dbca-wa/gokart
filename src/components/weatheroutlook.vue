@@ -575,7 +575,8 @@
       setOutlookColumns:function(columns,toolid) {
         var outlookSetting = toolid?this.getOutlookSetting(toolid):this.outlookSetting
         toolid = toolid || this.outlookTool.tooid
-
+        console.log("toolID");
+        console.log(toolid);
         if (!columns || columns.length === 0) {
             if (toolid === "weather-outlook-default") {
                 columns = [
@@ -626,10 +627,11 @@
                   },
                   {
                       workspace:"bom",
-                      id:"IDZ10134_AUS_AFDRS_fdr_SFC",
+                      id:"IDZ10134_AUS_AFDRS_fdr_SFC_HTML",
                   },
                 ]
             } else if (toolid === "weather-outlook-customized") {
+                
                 columns = [
                   {
                       workspace:"bom",
@@ -678,7 +680,7 @@
                   },
                   {
                       workspace:"bom",
-                      id:"IDZ10134_AUS_AFDRS_fdr_SFC",
+                      id:"IDZ10134_AUS_AFDRS_fdr_SFC_HTML",
                   },
 
                 ]
@@ -754,6 +756,36 @@
                           title:"grassland_fire_danger_index"
                         }
                     },
+                    {
+                        workspace:"bom",
+                        id:"IDZ10134_AUS_AFDRS_fdr_SFC_NOHTML",
+                        options:{
+                          title:"FDR"
+                        }
+                    },
+                    {
+                        workspace:"bom",
+                        id:"IDW71127_WA_DF_SFC",
+                        options:{
+                          title:"DF"
+                        }
+                    },
+                    {
+                        workspace:"bom",
+                        id:"IDW71139_WA_Curing_SFC",
+                        options:{
+                          title:"Curing"
+                        }
+                    },
+                    {
+                        workspace:"bom",
+                        id:"IDZ10135_AUS_AFDRS_fbi_SFC",
+                        options:{
+                          title:"FBI"
+                        }
+                    },
+
+
                 ]
             }
         }

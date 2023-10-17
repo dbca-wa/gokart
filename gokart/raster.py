@@ -430,6 +430,13 @@ FIRE_DANGER_RATING = {
         4: {'name': 'Catastrophic','bgcolor': '#aa1d1d', 'fontcolor': '#FFFFFF'}
 }
 
+FIRE_DANGER_RATING_IMAGES = {
+        0: {'img': '/dist/static/images/fdr/norating_50.png'},
+        1: {'img': '/dist/static/images/fdr/moderate_50.png'},
+        2: {'img': '/dist/static/images/fdr/high_50.png'},
+        3: {'img': '/dist/static/images/fdr/extreme_50.png'},
+        4: {'img': '/dist/static/images/fdr/catastrophic_50.png'}
+}
 for value in WEATHER_ICONS.itervalues():
     if "night-icon" not in value:
         value["night-icon"] = value["icon"]
@@ -458,11 +465,21 @@ def getWeather(band,data):
 def getFireDangerRatingFriendly(band,data):
     if data is None:
         return None
+    fdr_index = FIRE_DANGER_RATING_IMAGES.get(int(data))
+    if fdr_index is None:
+        return None
+    else:
+        return "<img src='{}'/>".format(fdr_index["img"])
+        #return "<b style='background-color: {}; color: {}; padding:10px; border-radius: 5px;'>{}</b>".format(fdr_index["bgcolor"], fdr_index["fontcolor"],fdr_index["name"])
+
+def getFireDangerRating(band,data):
+    if data is None:
+        return None
     fdr_index = FIRE_DANGER_RATING.get(int(data))
     if fdr_index is None:
         return None
     else:
-        return "<b style='background-color: {}; color: {}; padding:10px; border-radius: 5px;'>{}</b>".format(fdr_index["bgcolor"], fdr_index["fontcolor"],fdr_index["name"])
+        return fdr_index["name"]
 
 raster_datasources={
     "bom":{
@@ -1912,7 +1929,30 @@ raster_datasources={
                 "style":"text-align:center",
             }
         },
-        "IDZ10134_AUS_AFDRS_fdr_SFC":{
+        "IDZ10134_AUS_AFDRS_fdr_SFC_HTML":{
+            "file":os.path.join(settings.get_string("BOM_HOME","/var/www/bom_data"),"adfd","IDZ10134_AUS_AFDRS_fdr_SFC.nc"),
+            "name":"Fire Danger Rating Icon",
+            "sort_key":("fire","rating"),
+            "metadata_f":{
+                "refresh_time":getEpochTimeFunc("NETCDF_DIM_time",1),
+                "band_timeout":getBandTimeoutFunc("NETCDF_DIM_time"),
+                "name":getMetadataFunc("long_name",1),
+                "unit":getUnitFunc("units",1),
+            },
+            "band_metadata_f":{
+                "start_time":getEpochTimeFunc("NETCDF_DIM_time"),
+            },
+            "band_f":{
+                "band_match":isInBandFunc,
+                "data":getFireDangerRatingFriendly,
+            },
+            "options":{
+                "title":"FDR",
+                "srs":"EPSG:4326",
+                "style":"text-align:center",
+            }
+        },
+        "IDZ10134_AUS_AFDRS_fdr_SFC_NOHTML":{
             "file":os.path.join(settings.get_string("BOM_HOME","/var/www/bom_data"),"adfd","IDZ10134_AUS_AFDRS_fdr_SFC.nc"),
             "name":"Fire Danger Rating",
             "sort_key":("fire","rating"),
@@ -1927,7 +1967,7 @@ raster_datasources={
             },
             "band_f":{
                 "band_match":isInBandFunc,
-                "data":getFireDangerRatingFriendly,
+                "data":getFireDangerRating,
             },
             "options":{
                 "title":"FDR",

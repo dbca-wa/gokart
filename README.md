@@ -30,6 +30,7 @@ node 8.10.0
 npm install npm@6.14.16
 curl -fsSL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 apt-get install -y nodejs
+
 ```
 Regard node/npm versions, v8.* should work (lts/carbon). `nvm` can assist, e.g.:
 
