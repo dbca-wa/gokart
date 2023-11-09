@@ -259,7 +259,7 @@ def saveas():
 
 # WMS shim for Himawari 8
 # Landgate tile servers, round robin
-FIREWATCH_SERVICE = "/mapproxy/firewatch/service"
+FIREWATCH_SERVICE = "/mapproxy/firewatch/service/"
 FIREWATCH_GETCAPS = FIREWATCH_SERVICE + "?service=wms&request=getcapabilities"
 FIREWATCH_HTTPS_VERIFY = settings.get_bool("FIREWATCH_HTTPS_VERIFY", True)
 
