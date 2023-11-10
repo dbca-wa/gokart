@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "blueimp-canvas-to-blob": "~3.3.0",
-    "dexie": "~1.4.2",
+    "dexie": "~3.2.2",
     "dragula": "~3.7.2",
     "emailjs-com": "^2.6.3",
     "filesaverjs": "~0.2.2",
