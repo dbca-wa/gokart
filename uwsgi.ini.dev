@@ -1,5 +1,6 @@
 [uwsgi]
-http            = :8080
+#socket          = :9021
+http           = :9005
 gevent          = 100
 max-requests    = 1000
 buffer-size     = 32768
@@ -10,15 +11,15 @@ disable-logging = true
 http-timeout    = 1800
 
 # Django-related settings
-chdir           = /app/
+chdir           = /share-data/gokart 
 module          = gokart
 
 # Process-related settings
 auto-procname   = true
 processes       = 16
-static-map      = /dist=%(chdir)dist/release
-static-map      = /static=%(chdir)gokart/static
-static-map      = /fetch=%(chdir)gokart/tmp
+static-map      = /dist=/share-data/gokart/dist/release
+static-map      = /static=/share-data/gokart/gokart/static
+static-map      = /fetch=/share-data/gokart/gokart/tmp
 static-safe     = %(chdir)/dist
 static-cache-paths = 30
 die-on-term     = true

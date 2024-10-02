@@ -186,4 +186,6 @@ def getEnvDomain():
     else:
         raise Exception("Domain({}) Not Support".format(domain))
 
+KMI_AUTH2_BASIC_AUTH_USER = os.environ.get("KMI_AUTH2_BASIC_AUTH_USER")
+KMI_AUTH2_BASIC_AUTH_PASSWORD = os.environ.get("KMI_AUTH2_BASIC_AUTH_PASSWORD")
 
