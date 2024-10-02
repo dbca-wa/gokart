@@ -214,9 +214,12 @@ def getDistance(p1,p2,unit="m",p1_proj="EPSG:4326",p2_proj="EPSG:4326"):
 
 #return polygon or multipolygons if have, otherwise return None
 def extractPolygons(geom):
+    print ("extractPolygons")
+    print (geom)
     if not geom:
         return None
     elif isinstance(geom,Polygon) or isinstance(geom,MultiPolygon):
+        print ("MultiPolygon elif")
         return geom
     elif isinstance(geom,GeometryCollection):
         result = None
@@ -280,7 +283,16 @@ def extractPoints(geom):
         return None
 
 def retrieveFeatures(url,session_cookies):
-        res = requests.get(url,verify=False,cookies=session_cookies)
+        print(url)
+        print (settings.KMI_AUTH2_BASIC_AUTH_USER)
+        auth_request = requests.auth.HTTPBasicAuth(settings.KMI_AUTH2_BASIC_AUTH_USER,settings.KMI_AUTH2_BASIC_AUTH_PASSWORD)
+
+        res = requests.get(url,
+                            verify=False,
+#                           cookies=session_cookies,
+                            auth=auth_request,
+
+                            )
         res.raise_for_status()
         return res.json()
 
@@ -391,6 +403,7 @@ def calculateArea(feature,kmiserver,session_cookies,options):
     }
     The reason to calculate the area in another process is to releace the memory immediately right after area is calculated.
     """
+    return  _calculateArea(feature,kmiserver,session_cookies,options,False)
     if not settings.CALCULATE_AREA_IN_SEPARATE_PROCESS:
         return  _calculateArea(feature,kmiserver,session_cookies,options,False)
 
@@ -460,21 +473,23 @@ def _calculateArea(feature,kmiserver,session_cookies,options,run_in_other_proces
     total_layer_area = 0
 
     geometry = extractPolygons(getShapelyGeometry(feature))
-
+    print ("extractPolygons end")
     if not geometry :
         area_data["total_area"] = 0
         return result
-
+    print ("next step extractPolygons")
     #before calculating area, check the polygon first.
     #if polygon is invalid, throw exception
-    valid,msg = geometry.check_valid
-    if not valid:
-        status["invalid"] = msg
+    #valid,msg = geometry.check_valid
+    #if not valid:
+    #    status["invalid"] = msg
 
     geometry_aea = transform(geometry,target_proj='aea')
-
+    print ("next step transform")
     try:
+        print ("try getGeometryArea")
         area_data["total_area"] = getGeometryArea(geometry_aea,unit,'aea')
+        print ("finish getGeometryArea")
     except:
         traceback.print_exc()
         if "invalid" in status:

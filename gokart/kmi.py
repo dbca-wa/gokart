@@ -266,10 +266,12 @@ def get_layerdefinition(layerids,kmiserver=None,results={}):
                         else:
                             url = "{}/ows?service=WFS&version=2.0.0&request=GetFeature&typeName={}&count=1&outputFormat=application%2Fjson".format(kmiserver,layerid)
 
+                        auth_request = requests.auth.HTTPBasicAuth(settings.KMI_AUTH2_BASIC_AUTH_USER,settings.KMI_AUTH2_BASIC_AUTH_PASSWORD)
                         res = requests.get(
                             url,
                             verify=False,
-                            cookies=session_cookie
+#                            cookies=session_cookie
+                            auth=auth_request,
                         )
                         res.raise_for_status()
                         featuresdata = res.json()
