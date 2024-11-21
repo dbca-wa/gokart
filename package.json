@@ -75,7 +75,7 @@
     "jstree": "~3.3.4",
     "kjua": "~0.1.1",
     "localforage": "~1.4.2",
-    "moment": "~2.21.0",
+    "moment": "~2.29.2",
     "moment-timezone": "~0.5.14",
     "msal": "~1.4.4",
     "nodemailer": "^6.4.11",
