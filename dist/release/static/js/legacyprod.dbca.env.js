@@ -12,7 +12,7 @@ var env = {
 
 	  hotspotService:"https://hotspots.dbca.wa.gov.au/geoserver/hotspots/ows",
 
-    gokartService:"https://sss-uat-legacy.dbca.wa.gov.au",
+    gokartService:"https://sss-legacy.dbca.wa.gov.au",
     resourceTrackingService:"https://resourcetracking.dbca.wa.gov.au",
     bfrsService:"https://bfrs.dbca.wa.gov.au",
     staticService:"https://static.dbca.wa.gov.au",
