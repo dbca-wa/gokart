@@ -2,8 +2,8 @@ var env = {
     authUrl:'/sso/profile',
 	appType: (window.location.protocol == "file:")?"cordova":"webapp",
 
-    cswService:"https://csw-uat.dbca.wa.gov.au/catalogue/api2/application/records",
-    catalogueAdminService:"https://csw-uat.dbca.wa.gov.au",
+    cswService:"https://csw.dbca.wa.gov.au/catalogue/api2/application/records",
+    catalogueAdminService:"https://csw.dbca.wa.gov.au",
 
     kmiService:"https://kmi.dbca.wa.gov.au/geoserver",
     legendSrc:"https://kmi.dbca.wa.gov.au/geoserver/gwc/service/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&legend_options=fontName:Times%20New%20Roman;fontAntiAliasing:true;fontSize:14;bgColor:0xFFFFEE;dpi:120;labelMargin:10&LAYER=",
